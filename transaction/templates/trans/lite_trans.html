@@ -1,0 +1,131 @@
+{% extends "base_dash.html" %}
+
+{% block title %}
+Liste de transaction - 
+{%if user.is_authenticated%}
+    {{ user.username }}
+{% endif %}
+{% endblock %}
+
+{% block name_link %} 
+    Transactions
+{% endblock %}
+
+
+{% block content %}
+
+<div class="btn-add-trans">
+    <a href="{% url 'transaction:add_transaction_by_form' %}">
+        Ajouter une transaction
+    </a>
+</div>
+
+<div class="container-transaction">
+
+    <div class="container-trans-list">
+
+        {% if transation_listes %}
+
+        <table class="table-list-trans">
+            <tr>
+                <td>#</td>
+                <td>
+                    <i class="fa-solid fa-calendar-days" style="color: #005f9e;"></i>
+                    Date
+                </td>
+                <td>
+                    <i class="fa-solid fa-list" style="color: #005f9e;"></i>
+                    Catégorie
+                </td>
+                <td>
+                    <i class="fa-solid fa-dollar-sign" style="color: #005f9e;"></i>
+                    Montant
+                </td>
+                <td>
+                    <i class="fa-solid fa-file-invoice-dollar" style="color: #005f9e;"></i>
+                    Compte
+                </td>
+                <td>
+                    <i class="fa-solid fa-wrench" style="color: #005f9e;"></i>
+                    Action
+                </td>
+            </tr>
+            {% for transation_liste in transation_listes %}
+
+            <tr>
+                <td>{{ transation_liste.id }}</td>
+                <td>{{ transation_liste.date_transaction }}</td>
+                <td>{{ transation_liste.categorie }}</td>
+                {% if transation_liste.compte.devise == "USD" %}
+                    <td>${{ transation_liste.montant }}</td>
+                {% else %}
+                    <td>Fc{{ transation_liste.montant }}</td>
+                {% endif %}
+                <td>{{ transation_liste.compte }}</td>
+                <td>
+
+                    <a href="{% url 'transaction:updateTransactiom' transation_liste.id %}" style="color: #28a745;"><i class="fa-solid fa-square-pen"></i></a>
+
+                    <a href="{% url 'transaction:deleteTransaction' transation_liste.id %}" style="color: red; margin-left: 10px;"><i class="fa-solid fa-trash"></i></a>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </table>
+
+        {% else %}
+            <p class="no-transaction">Aucune transaction disponible</p>
+        {% endif %}
+    </div>
+
+    <section class="other-activity">
+        <h2>Mes catégories</h2>
+        <p class="add-cat">
+            <a href="{% url 'transaction:addCategorie' %}" class="js-modal-categorie">+ Ajouter une catégorie</a>
+        </p>
+
+        <p class="all-cat-tilte">Toutes les catégories</p>
+
+        <table class="all_categories_table">
+            <tr>
+                <td>
+                    <i class="fa-solid fa-font-awesome"></i>
+                    Nom
+                </td>
+                <td>
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    Limite
+                </td>
+            </tr>
+            {% for categorie in all_categs %}
+                <tr>
+                    <td class="all-cat-item">{{ categorie.nom_categorie }}</td>
+                    <td class="limite_categorie">${{ categorie.limite }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </section>
+
+</div>
+
+
+<aside class="Add-Categories" aria-hidden="true" role="dialog" aria-labelledby="title-categorie-add" style="display: none;">
+    <div class="Add-Categories__wrapper">
+        <p class="close-modal-categorie">
+            <i class="fa-solid fa-close"></i>
+        </p>
+        <h4 class="title-categorie-add">Ajouter une Catégorie</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button>Ajouter</button>
+        </form>
+    </div>
+</aside>
+
+
+
+
+
+{% endblock %}

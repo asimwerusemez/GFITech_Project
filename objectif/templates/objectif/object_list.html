@@ -1,0 +1,180 @@
+{% extends "base_dash.html" %}
+
+{% block title %}
+    Objectifs - 
+    {%if user.is_authenticated and user.particulier%}
+        {{ user.username }}
+
+    {% elif user.is_authenticated and user.entreprise %}
+        {{ user.nom_entreprise }}
+        
+    {% endif %}
+
+{% endblock %}
+
+{% block name_link %} 
+Objectifs Financier 
+{% endblock %}
+
+{% block content %}
+
+
+<section>
+    <p>{{ message }}</p>
+</section>
+
+<div class="add_objectif">
+    <a href="{% url 'objectif:object_add' %}" class="add_objectif-btn">Ajouter un objectif</a>
+</div>
+
+<section class="afichage-objectif">
+
+    <div class="all_objectif">
+
+        <div class="all_objectif_container-show">
+            {% for objectif in objectifs %}
+            <div class="objectif-view">
+                <h3 class="title-objectif">{{ objectif.motif }}</h3>
+
+                <div class="conatainer-info">
+                    <div>
+                        <p>Montant Objectif: </p>
+                        <h4>${{ objectif.objectif }}</h4>
+                    </div>
+                    <hr>
+
+                    <div>
+                        <p>Montant Actuel: </p>
+                        <h4>${{ objectif.montant_actuel }}</h4>
+                    </div>
+                    <hr>
+
+                    <div>
+                        <p>Date Fin: </p>
+                        <h4>{{ objectif.date_fin }}</h4>
+                    </div>
+                    <hr>
+
+                    <div>
+                        <p>Statut: </p>
+                        <h4>{{ objectif.statut }}</h4>
+                    </div>
+                </div>
+
+                <div class="actions-objectif">
+                    <p>
+                        <a href="{% url 'objectif:delete_object' objectif.id %}"><i class="fa-solid fa-trash"></i></a>
+                    </p>
+                    <p>
+                        <a href="{% url 'objectif:update_object' objectif.id %}"><i class="fa-solid fa-square-pen"></i></a>
+                    </p>
+                </div>
+
+                <div class="add-amount-objectif">
+                    <a href="{% url 'objectif:ajout_montant_objectif' objectif.id %}">
+                        <button>
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Ajouter Montant</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+ 
+    </div>
+
+    <div class="all_progessions">
+        <div class="container-onglets container-onglets-objectif">
+            <div class="tab-header tab-header-objectif">
+                <button class="tab-link active" data-ref="depenses">En Cours</button>
+                <button class="tab-link " data-ref="gains">Terminer</button>
+            </div>
+        
+            <div class="tab-body tab-body-objectif active" data-id="depenses">
+                <p><a href="#">Voir Tout les graphiques</a></p>
+                {% for progression in progressions %}
+                    <div class="graphique-objectif">
+                        <h3>{{ progression.motif }}</h3>
+                        <div class="canvas-ul-progression">
+                            <canvas class="progression-objectif-graphique"></canvas>
+                            <p>{{ progression.statut }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        
+            <div class="tab-body tab-body-objectif" data-id="gains">
+                <p><a href="#">Voir Tout les graphiques</a></p>
+                {% for progression in progressions %}
+                    <div class="graphique-objectif">
+                        <h3>{{ progression.motif }}</h3>
+                        <div class="canvas-ul-progression">
+                            <canvas class="progression-objectif-graphique"></canvas>
+                            <p>{{ progression.statut }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+<div class="container-objectif">
+    <div class="first-div-objectif">
+        <div class="ajouter_objectif" style="display: none;">
+            <a href="{% url 'objectif:objectif_view' %}">
+                <img src="/static/images/logo/fermer.png" alt="" class="btn-close-objec">
+            </a>
+
+            <h1>Ajouter un objectif</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button>Enregister</button>
+            </form>
+        </div>
+
+        <div class="supprimer-objectif" style="display: none;">
+            <form method="post">
+                {% csrf_token %}
+                <p>Etes-vous sur de vouloir supprimer " <strong>{{ name_item }}</strong> " de vos objectifs ?</p>
+                <button type="submit" class="delete-object">Supprimer</button>
+                <a href="{% url 'objectif:objectif_view' %}"><button type="button" class="cancel-object">Annuler</button></a>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+{% block script_objectif %}
+
+<script>
+    const barCanvas = document.querySelectorAll(".progression-objectif-graphique");
+    let objectifs = {{ objectif|safe }};
+    let montants_actuels = {{ montant_actuel|safe }};
+    
+    for(let i = 0; i < barCanvas.length; i++) {
+      const barChart = new Chart(barCanvas[i], {
+        type: "doughnut",
+        data: {
+          labels: ["Objectif", "Actuel"],
+          datasets: [{
+            data: [objectifs[i], montants_actuels[i]],
+            backgroundColor: [ "#9719A2", "#379947"],
+            tension: 0.1,
+            borderWidth: 1 // Diminuer l'épaisseur à 2 pixels
+        }]
+        },
+      });
+    }
+</script>
+
+
+{% endblock %}
+
+
+{% endblock %}

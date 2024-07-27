@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <script src="{% static 'js/app.js' %}" defer type="module"></script>
+  <style>
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #005f9e7a;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenu-centre">
+
+    <div class="message-bienvenue">
+      <h2>Se Connecter</h2>
+      <p>Content de te revoir! veuillez vous connecter pour accéder à votre compte</p>
+    </div>
+
+    <form class="formulaire-stylise" method="post">
+
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <span>Nouveau sur GFITech?<a href="{% url 'accounts:choice' %}">Créer un compte</a></span>
+      <button type="submit">Se Connecter</button>
+    </form>
+
+  </div>
+
+
+</body>
+</html>

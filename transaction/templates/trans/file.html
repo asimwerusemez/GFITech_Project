@@ -1,0 +1,22 @@
+{% extends "base_dash.html" %}
+{% block title %}
+Ajout transaction par fichier - 
+{%if user.is_authenticated%}
+    {{ user.username }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-add-file">
+        <h1>Ajouter par un fichier</h1>
+        <p>Ajouter un fichier Excel, CSV ou une image de votre relevé</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Enregistrer</button>
+        </form>
+    </div>
+
+{% endblock %}
+

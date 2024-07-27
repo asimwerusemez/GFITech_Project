@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat-js</title>
+    <script src="/static/js/chart.js"></script>
+
+    <style>
+        .container {
+            width: 40%;
+            padding: 40px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <canvas id="barCanvas" aria-label="chart" role="img"></canvas>
+    </div>
+    
+
+    <script>
+        const barCanvas = document.getElementById("barCanvas");
+
+        console.log(barCanvas)
+
+        const barChart = new Chart(barCanvas, {
+            type: "pie",
+            data: {
+                labels: ["Gains", "Objectif"],
+                datasets: [{
+                    data: [500, 100],
+                    backgroundColor: [
+                        "#252525",
+                        "#D9D9D9",
+                        "blue",
+                        "red",
+                    ],
+                    tension: 0.1,
+                    fill: true
+                }]
+            },
+        })
+    </script>
+</body>
+</html>

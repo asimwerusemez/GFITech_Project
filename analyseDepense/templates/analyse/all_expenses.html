@@ -1,0 +1,256 @@
+{% extends "base_dash.html" %}
+
+{% block title %}
+Analyse de dépenses
+{% endblock %}
+
+{% block name_link %} 
+    Analyse de Revenus
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container-onglets">
+    <a href="{% url 'analyseDepense:budget_generate' %}" class="see-complete-analyse">Voir l'Analyse complète</a>
+
+    <div class="tab-header">
+        <button class="tab-link active" data-ref="depenses">Dépenses</button>
+        <button class="tab-link " data-ref="gains">Gains</button>
+        <button class="tab-link" data-ref="budgets">Budgets</button>
+    </div>
+
+    <div class="tab-body active" data-id="depenses">
+        <div class="container-depenses">
+            <div class="title-depenses-analyse">
+                <div class="true-title">
+                    <p>total Dépenses: </p>
+                    <h2>${{ depenseParticulierUsd }} et {{ depenseParticulierCdf }}Fc</h2>
+                </div>
+                <div class="month-depenses-analyse">
+                    <p>Mois Actuel</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="per-categories"><p>Dépenses par catégories</p></div>
+
+        <div>
+            <canvas id="myChart-analyse-depense"></canvas>
+        </div>
+    </div>
+
+    <div class="tab-body" data-id="gains">
+        <div class="title-depenses-analyse">
+            <div class="true-title">
+                <p>total Revenus</p>
+                <h2>${{ gainParticulierUsd }} et {{ gainParticulierCdf }}Fc</h2>
+            </div>
+            <div class="month-depenses-analyse">
+                <p>Mois Actuel</p>
+            </div>
+        </div>
+        <div class="per-categories"><p>Revenus par catégories</p></div>
+        <div>
+            <canvas id="myChart-analyse-gains"></canvas>
+        </div>
+    </div>
+
+    <div class="tab-body" data-id="budgets">
+        <div class="entete-budget-analyse">
+            <div class="true-title">
+                <p>total Revenus</p>
+                <h2>{{ gainParticulierUsd }}$ et {{ gainParticulierCdf }}Fc</h2>
+            </div>
+            <div class="true-title">
+                <p>total Dépenses </p>
+                <h2>{{ depenseParticulierUsd }}$ et {{ depenseParticulierCdf }}Fc</h2>
+            </div>
+        </div>
+        <div class="month-depenses-analyse">
+            <p>Mois Actuel</p>
+        </div>
+
+        <div class="table-budget">
+            <table>
+                <tr class="table-budget-header">
+                    <td>
+                        <i class="fa-regular fa-calendar-days"></i>
+                        Mois
+                    </td>
+                    <td>
+                        <i class="fa-solid fa-list"></i>
+                        Catégories
+                    </td>
+                    <td>
+                        <i class="fa-solid fa-layer-group"></i>
+                        Sous-catégorie
+                    </td>
+                    <td>
+                        <i class="fa-solid fa-arrow-up-wide-short"></i>
+                        Montant Budgété
+                    </td>
+                    <td>
+                        <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                        Montant Réel
+                    </td>
+                    <td>
+                        <i class="fa-solid fa-arrows-left-right-to-line"></i>
+                        Écart
+                    </td>
+                    <td>
+                        <i class="fa-solid fa-clock"></i>
+                        Date dépense
+                    </td>
+                    <td>
+                        <i class="fa-solid fa-money-check-dollar"></i>
+                        Mode paiement
+                    </td>
+                </tr>
+
+                {% for budget_mensuels in budget_mensuel %}
+                <tr>
+                    <td>{{ budget_mensuels.mois_en_cours }}</td>
+                    <td>{{ budget_mensuels.type_transaction }}</td>
+                    <td> {{ budget_mensuels.categorie }} </td>
+                    <td>{{ budget_mensuels.montant_budgete }}$</td>
+
+                    {% if budget_mensuels.montant_depenses %}
+                    <td> {{ budget_mensuels.montant_depenses }} $</td>
+                    {% elif budget_mensuels.montant_revenus %}
+                    <td> {{ budget_mensuels.montant_revenus }} $</td>
+                    {% endif %}
+
+                    {% if budget_mensuels.ecartDepenses %}
+                        <td>
+                            {{ budget_mensuels.ecartDepenses }}
+
+                            {% if budget_mensuels.montant_revenus > budget_mensuels.ecartDepenses %}
+                            <i class="fa-solid fa-triangle-exclamation" style="color: red;"></i>
+                            {% else %}
+                            <i class="fa-solid fa-thumbs-up" style="color: #005f9e;"></i>
+                            {% endif %}
+                            
+                        </td>
+
+                    {% elif budget_mensuels.ecartRevenus %}
+                        <td>
+
+                            {{ budget_mensuels.ecartRevenus }}
+
+                            {% if budget_mensuels.montant_revenus < budget_mensuels.ecartRevenus %}
+                            <i class="fa-solid fa-triangle-exclamation" style="color: #005f9e;"></i>
+                            {% else %}
+                            <i class="fa-solid fa-thumbs-up" style="color: #005f9e;"></i>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+
+                    <td> {{ budget_mensuels.date_depense }} </td>
+                    <td> {{ budget_mensuels.mode_paiement }} </td>
+                </tr>
+                {% endfor %}
+                
+                
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var ctx = document.getElementById('myChart-analyse-depense').getContext('2d');
+    var labels = {{ label_expenses|safe }};
+    var data = {{ data_expenses|safe }};
+    
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#20c997',
+                    '#005f9e',
+                    // Ajoutez plus de couleurs ici si nécessaire
+                ],
+                barThickness: 30, // Réglez la valeur souhaitée pour l'épaisseur des barres
+            }]
+        },
+        options: {
+            layout: {
+                padding: {
+                    left: 50, // Ajustez la valeur pour centrer horizontalement
+                    right: 50,
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false, // Supprime la grille horizontale
+                    },
+                    ticks: {
+                        display: true, // Supprime les étiquettes de l'axe X
+                    }
+                },
+                y: {
+                    grid: {
+                        display: true, // Supprime la grille verticale
+                    }
+                }
+            }
+        }
+    });
+    
+    
+
+    var gains = document.getElementById('myChart-analyse-gains').getContext('2d');
+    var label_gains = {{ label_gains|safe }};
+    var data_gains = {{ data_gains|safe }};
+
+    var myChart = new Chart(gains, {
+        type: 'bar',
+        data: {
+            labels: label_gains,
+            datasets: [{
+                data: data_gains,
+                backgroundColor: [
+                    '#20c997',
+                    '#005f9e',
+                    // Ajoutez plus de couleurs ici si nécessaire
+                ],
+                barThickness: 30, // Réglez la valeur souhaitée pour l'épaisseur des barres
+            }]
+        },
+        options: {
+            layout: {
+                padding: {
+                    left: 50, // Ajustez la valeur pour centrer horizontalement
+                    right: 50,
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false, // Supprime la grille horizontale
+                    },
+                    ticks: {
+                        display: true, // Supprime les étiquettes de l'axe X
+                    }
+                },
+                y: {
+                    grid: {
+                        display: true, // Supprime la grille verticale
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}
+
+
+
+

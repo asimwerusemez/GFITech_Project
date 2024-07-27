@@ -1,0 +1,30 @@
+{% extends "base_dash.html" %}
+
+{% block title %}
+suppression de transaction - 
+{%if user.is_authenticated%}
+    {{ user.username }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<aside class="Add-Categories delete-transaction" aria-hidden="true" role="dialog" aria-labelledby="title-categorie-add" style="display: block;">
+    <div class="Add-Categories__wrapper delete-transactio__wrapper" style="width: 70%;">
+        <div class="update-transaction">
+            <p class="close-modal-categorie">
+                <i class="fa-solid fa-close"></i>
+            </p>
+            <div class="info">
+                <h1 style="text-align: center;">Effectuer une Modification</h1>
+            </div>
+            <form method="post" class="form-trans-add">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Modifier</button>
+            </form>
+        </div>
+    </div>
+</aside>
+
+{% endblock %}

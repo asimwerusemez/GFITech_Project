@@ -1,0 +1,49 @@
+{% extends "base_dash.html" %}
+
+{% block title %}
+Alert du depensement limite
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<section class="notification">
+    <div class="container-alert">
+        <div class="close-alert">
+            <a href="{% url 'transaction:listeTransaction' %}">
+                <i class="fa-solid fa-close"></i>
+            </a>
+        </div>
+    
+        <h3 class="title-alert">Alerte de depassement de limite mensuel</h3>
+        
+        {% for alerts in alert %}
+
+            <div class="all-alert-show">
+                <div class="all-alert">
+                    <p class="date-alert">{{ alerts.date }}</p>
+                    <p>
+                        {{ alerts.nom_categorie }} de {{ alerts.montant }}
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </p>
+                </div>
+                <p>
+                    <a href="#" style="color: brown; font-size: 22px;">
+                        <i class="fa-solid fa-close"></i>
+                    </a>
+                </p>
+            </div>
+
+        {% endfor %}
+
+     </div>
+    
+</section>
+
+{% block countAlert %}
+<span style="color: #fff;">{{ countAlert }}</span>
+{% endblock %}
+
+{% endblock %}

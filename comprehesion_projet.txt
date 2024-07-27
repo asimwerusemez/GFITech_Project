@@ -1,0 +1,70 @@
+//
+SCENARIO POUR GFITECH
+//
+
+A. Pour un particulier (Jean) :
+  ============================
+
+1. Jean se connecte à l’application GFITech.
+
+2. Il accède au module de gestion des transactions et entre les détails de ses transactions récentes, comme l’achat d’épicerie, le paiement du loyer, etc.
+L’application enregistre ces transactions et les catégorise automatiquement dans le module d’analyse des dépenses. Par exemple, l’achat d’épicerie est catégorisé comme “Nourriture”.
+
+3. Jean peut ensuite consulter le module de tableau de bord financier pour voir un aperçu de ses dépenses et revenus. Il peut voir combien il a dépensé en nourriture, en loyer, etc., et combien il a gagné.
+
+4. Sur la base de ces informations, Jean peut prendre des décisions éclairées sur la gestion de son argent.
+
+B. Pour une entreprise (Société XYZ) :
+  ===================================
+
+1. La société XYZ se connecte à l’application GFITech.
+
+2. Elle accède au module de gestion des transactions et entre les détails de ses transactions récentes, comme les ventes, les achats, les salaires, etc.
+L’application enregistre ces transactions et les catégorise automatiquement dans le module d’analyse des dépenses. Par exemple, le paiement des salaires est catégorisé comme “Salaires”.
+
+3. La société XYZ peut ensuite consulter le module de tableau de bord financier pour voir un aperçu de ses dépenses et revenus. Elle peut voir combien elle a dépensé en salaires, en achats, etc., et combien elle a gagné en ventes.
+
+4. Sur la base de ces informations, la société XYZ peut prendre des décisions éclairées sur la gestion de ses finances.
+
+//  la maniere de collecte des donnees
+  =====================================
+
+Collecte de données : La collecte de données peut se faire de plusieurs façons. Les utilisateurs peuvent entrer manuellement les détails de leurs transactions dans l’application. Vous pouvez également intégrer votre application avec d’autres plateformes financières pour importer automatiquement les transactions. Par exemple, vous pouvez permettre aux utilisateurs de connecter leur compte bancaire à l’application pour importer automatiquement leurs transactions. Assurez-vous que cette intégration est sécurisée et respecte toutes les réglementations pertinentes.
+
+//
+LES MODULES GFITECH
+//
+
+1. Module de gestion des transactions : Ce module peut gérer toutes les transactions financières de base, y compris les débits, les crédits, et le suivi des comptes. Il peut également inclure des fonctionnalités pour la gestion des factures et des ventes.
+
+2. Module de tableau de bord financier : Ce module peut afficher des informations financières en temps réel sous forme de graphiques et de tableaux. Il peut inclure des indicateurs financiers tels que les revenus et les dépenses.
+
+3. Module d’analyse des dépenses : Ce module peut utiliser l’IA pour catégoriser automatiquement les dépenses en différentes catégories pour aider les utilisateurs à comprendre leurs habitudes de dépenses.
+
+
+// AU CAS OU IL Y AURA LE TEMPS
+
+4. Module de comptabilité : Ce module peut gérer toutes les transactions financières de base, y compris les débits, les crédits, et le suivi des comptes1. Il peut également inclure des fonctionnalités pour la gestion des factures, des bons de commande, et des ventes
+
+5. Module de conseils financiers : Ce module peut utiliser l’IA pour fournir des conseils financiers personnalisés basés sur les données financières de l’utilisateur
+
+6. Module d’intégration avec d’autres services financiers : Ce module pourrait permettre à votre application de s’intégrer avec d’autres plateformes financières pour fournir un service plus complet
+
+
+
+
+
+
+POSSIBILITE D'AVOIRE LES DONNEES
+================================
+
+1.	Importation de relevés bancaires : Certains services financiers permettent aux utilisateurs d’exporter leurs transactions sous forme de fichiers CSV ou d’autres formats. Vous pouvez permettre aux utilisateurs d’importer ces fichiers dans votre application, puis analyser les fichiers pour extraire les détails des transactions.
+
+2.	Utilisation d’une API d’agrégation de comptes financiers : Il existe des services tels que Plaid, Yodlee, et d’autres qui fournissent des API permettant d’accéder aux informations de compte de l’utilisateur à partir de plusieurs institutions financières. Ces services nécessitent l’autorisation de l’utilisateur et sont généralement soumis à des frais.
+
+
+
+
+
+
+

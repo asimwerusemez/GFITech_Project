@@ -1,0 +1,28 @@
+{% extends "base_dash.html" %}
+
+{% block title %}
+Ajout transaction - 
+{%if user.is_authenticated%}
+    {{ user.username }}
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-transaction-add-form">
+    <div>
+        <div class="info">
+            <h1>Ajouter une transaction</h1>
+        </div>
+        <form method="post" class="form-trans-add">
+            {% csrf_token %}
+            {{ transaction_form.as_p }}
+            <button type="submit">Enregistrer</button>
+        </form>
+        <p class="other-methode">Où</p>
+        <p class="add-by-file"><a href="{% url 'transaction:add_transaction_by_file' %}">Ajouter par un fichier</a></p>
+    </div>
+</div>
+
+{% endblock %}

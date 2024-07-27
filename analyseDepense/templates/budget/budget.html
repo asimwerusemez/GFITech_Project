@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse complète</title>
+
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    
+    <header class="top_bar_analyse">
+        <div class="top_bar_analyse_contais">
+            <div class="logo">
+                <img src="/static/images/logo/logo2.png" alt="">
+            </div>
+            <div>
+                {% if user.is_authenticated %}
+                <p>Bienvenue <span>{{ user.username }}</span></p>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="container-analyse">
+        
+        <div class="retour">
+            <a href="{% url 'analyseDepense:analyseDepense' %}">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+
+        <div class="title-analyse">
+            Analyse financière complète
+        </div>
+
+        <section class="all_section_analyse">
+            <div class="large-div-analyse">
+                <div class="section__title_analyse">
+                    <img src="{% static 'images/logo/analyses/spending.png' %}" alt="spending" width="30">
+                    <span>Mes depenses du Mois</span>
+                </div>
+
+                <div class="depenses-header-analyse">
+                    <div>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <img src="{% static 'images/logo/analyses/money.png' %}" alt="money" width="20">
+                        <span>Dépenses</span>
+        
+                        <i class="fa-solid fa-table-list"></i>
+                        <span>Vue du tableau</span>
+                    </div>
+        
+                    <div>
+                        <span>Filtre</span>
+                        <span>Trier</span>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Rechercher</span>
+        
+                        <a href="#"><button>Ajouter</button></a>
+                    </div>
+                </div>
+
+                <div class="expenseOfMonth__table">
+                    <table>
+                        <tr>
+                            <td>
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>Date</span>
+                            </td>
+                            <td>
+                                <i class="fa-solid fa-hashtag"></i>
+                                Sorties
+                            </td>
+                            <td>
+                                <i class="fa-solid fa-hashtag"></i>
+                                Entrées...
+                            </td>
+                            <td>
+                                <i class="fa-solid fa-list"></i>
+                                <span>Catégories</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Juin 24, 2021</td>
+                            <td>-$230</td>
+                            <td>$700</td>
+                            <td>Transport</td>
+                        </tr>
+                        <tr>
+                            <td>Juin 25, 2021</td>
+                            <td>-$250</td>
+                            <td>$500</td>
+                            <td>Café</td>
+                        </tr>
+                        <tr>
+                            <td>Juin 26, 2021</td>
+                            <td>-$560</td>
+                            <td>$230</td>
+                            <td>Abonnement</td>
+                        </tr>
+                    </table>
+                    <div>
+                        <i class="fa-solid fa-arrow-down-long"></i>
+                        <span>Chargé encore plus ...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="left-div-analyse">
+                <div class="section__title_analyse">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Mois en cours</span>
+                </div>
+
+                <div>
+                    <div class="mois-en-cours-depenses">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <i class="fa-solid fa-calendar-days" style="color: #005f9e;"></i>
+                        <span>Mois</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+
+                    <hr>
+
+                    <div class="status-numbers">
+                        <div>
+                            <i class="fa-solid fa-arrow-up-9-1"></i>
+                            nb Status 1
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-ellipsis"></i>
+                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-font"></i>
+                        </div>
+                    </div>
+
+                    <div class="mois-en-cours-depenses__see">
+                        <h3>Juillet</h3>
+                        <div>
+                            <p>Voiture: $233/400 <span><i class="fa-solid fa-thumbs-up" style="color: #005f9e;"></i></span></p>
+                            <p>taxi: $350/$300 <span><i class="fa-solid fa-triangle-exclamation" style="color: #ff0000;"></i></span></p>
+                        </div>
+                    </div>
+                    <div class="mois-en-cours-add">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Ajouter</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="all_section_analyse">
+            <div class="large-div-analyse">
+                <div class="section__title_analyse">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                    <span class="budget-title-show">Différent Budgets</span>
+                </div>
+
+                <div class="entete-budget">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <img src="{% static 'images/logo/analyses/budget.png' %}" alt="" width="20">
+                    <span>Budget</span>
+                    <i class="fa-solid fa-table-list"></i>
+                    <span>List view</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <hr>
+
+                <div class="body-all-budget">
+                    <div>
+                        <p>Abonnement</p>
+                        <p>Café</p>
+                        <p>Transport</p>
+                    </div>
+                    <div class="montant-budget">
+                        <p>$50</p>
+                        <p>$30</p>
+                        <p>$100</p>
+                    </div>
+                </div>
+
+<hr style="opacity: .5; margin-top: 20px;">
+
+                <div class="mois-en-cours-add">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Ajouter</span>
+                </div>
+            </div>
+
+
+            <div class="left-div-analyse">
+                <div class="section__title_analyse">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Bilan Mensuel</span>
+                </div>
+
+                <div class="entete-bilan">
+                    <div>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Mois</span>
+                        <i class="fa-solid fa-table-list"></i>
+                        <span>Table List</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <form method="post">
+                            <input type="search" placeholder="Rechercher" style="width: 90px; border: none;">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="expenseOfMonth__table">
+                    <table>
+                        <tr>
+                            <td>
+                                <i class="fa-solid fa-font"></i>
+                                Nom
+                            </td>
+                            <td>
+                                <img src="{% static 'images/logo/analyses/sigma.png' %}" alt="sigma" width="15">
+                                _Depenses
+                            </td>
+                            <td>
+                                <img src="{% static 'images/logo/analyses/sigma.png' %}" alt="sigma" width="15">
+                                _Entrées
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Janvier</td>
+                            <td>$230</td>
+                            <td>$300</td>
+                        </tr>
+                        <tr>
+                            <td>Février</td>
+                            <td>$300</td>
+                            <td>$600</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="all_section_analyse">
+            <div class="large-div-analyse">
+                <div class="section__title_analyse">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Bilan Anuel</span>
+                </div>
+
+                <div class="entete-bilan">
+                    <div>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Anné</span>
+                        <i class="fa-solid fa-table-list"></i>
+                        <span>Table List</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <form method="post">
+                            <input type="search" placeholder="Rechercher" style="width: 90px; border: none;">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="expenseOfMonth__table">
+                    <table>
+                        <tr>
+                            <td>
+                                <i class="fa-solid fa-font"></i>
+                                Années
+                            </td>
+                            <td>
+                                <img src="{% static 'images/logo/analyses/sigma.png' %}" alt="sigma" width="15">
+                                _Depenses
+                            </td>
+                            <td>
+                                <img src="{% static 'images/logo/analyses/sigma.png' %}" alt="sigma" width="15">
+                                _Entrées
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2024</td>
+                            <td>$230</td>
+                            <td>$300</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+
+
+<!-- 
+icons
+
+<i class="fa-solid fa-hashtag"></i>
+
+<i class="fa-solid fa-table-list"></i>
+<i class="fa-solid fa-chevron-down"></i>
+<i class="fa-solid fa-arrow-up-right-from-square"></i>
+<i class="fa-solid fa-calendar-days"></i>
+<i class="fa-solid fa-plus"></i>
+<i class="fa-solid fa-arrow-down-long"></i>
+<i class="fa-solid fa-magnifying-glass"></i>
+
+<i class="fa-solid fa-font"></i>
+
+<i class="fa-solid fa-caret-down"></i>
+<i class="fa-solid fa-ellipsis"></i>
+
+<i class="fa-solid fa-thumbs-up"></i>
+<i class="fa-solid fa-triangle-exclamation"></i>
+<i class="fa-solid fa-list-check"></i>
+ -->
+

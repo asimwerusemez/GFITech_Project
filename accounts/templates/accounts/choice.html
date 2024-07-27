@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>choix profile</title>
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav_bar" id="nav_choice">
+            <div class="logo">
+                <a href="/"><img src="/static/images/logo/logo.png" alt="logo"></a>
+            </div>
+
+            <ul>
+                <li><p>Déjà inscrit sur GFITech ? <a href="{% url 'accounts:login' %}">Se Connecter</a></p></li>
+            </ul>
+
+        </nav>
+    </header>
+
+    <div class="body-profile">
+        <h1 class="title-prof">Inscrivez vous ! pour commencer</h1>
+        <p class="paraf-prof">Choisissez votre profil :</p>
+        <div class="choice-procfile">
+
+            <a href="{% url 'accounts:register_entreprise' %}" class="profil-link">
+                <div class="profil-1">
+                    <img src="/static/images/logo/entreprise.png" alt="entreprise">
+                    <div class="detail-profile">
+                        <h1>Entreprise</h1>
+                        <p>Gérer la finance de mon entreprise</p>
+                    </div>
+                    <img src="/static/images/logo/fleche-droite.png" alt="fleche" class="fleche">
+                </div>
+            </a>
+
+            <a href="{% url 'accounts:register_particulier' %}" class="profil-link">
+                <div class="profil-2">
+                    <img src="/static/images/logo/particulier.png" alt="entreprise">
+                    <div class="detail-profile">
+                        <h1>Particulier</h1>
+                        <p>Controler mes revenues financiére </p>
+                    </div>
+                    <img src="/static/images/logo/fleche-droite.png" alt="fleche" class="fleche">
+                </div>
+            </a>
+            
+        </div>
+    </div>
+
+
+</body>
+</html>

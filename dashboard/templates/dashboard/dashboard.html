@@ -1,0 +1,266 @@
+{% extends "base_dash.html" %}
+
+{% block title %}
+    Tableau de bord - 
+    {%if user.is_authenticated and user.particulier%}
+        {{ user.username }}
+
+    {% elif user.is_authenticated and user.entreprise %}
+        {{ user.nom_entreprise }}
+        
+    {% endif %}
+
+{% endblock %}
+
+{% block name_link %} 
+Tableau de bord 
+{% endblock %}
+
+{% block content %}
+
+<div class="container-dash">
+
+<section class="dash-section">
+
+    <div class="card-b-m">
+        <h1>Comptes</h1>
+        {% for compte in comptes %}
+        <div class="all-comptes">
+            <h2>{{ compte.operateur }}</h2>
+            <p>{{ compte.solde }} <span>{{ compte.devise }}</span></p>
+        </div>
+        {% endfor %}
+        <div>
+        </div>
+    </div>
+
+    <div class="wallet">
+        <h1 class="title-wallet">Wallet</h1>
+
+        <div class="solde-calc">
+            {% if somme_total_usd %}
+            <h1 class="somme_total">{{ somme_total_usd }} $</h1>
+            {% else %}
+            <!-- <h1>0 USD</h1> -->
+            {% endif %}
+
+            <!-- <h1 class="somme_total"> | </h1> -->
+
+            {% if somme_total_cdf %}
+            <h1 class="somme_total">{{ somme_total_cdf }} Fc</h1>
+            {% else %}
+            <!-- <h1>0 CDF</h1> -->
+            {% endif %}
+        </div>
+
+        <div class="calcGainOrDepense">
+            {% if user.particulier %}
+            <div class="usd">
+                
+                <div class="gain">
+                    <img src="/static/images/logo/benefice.png" alt="benefice">
+                    <div>
+                        <h2>{{ gainParticulierUsd }} $</h2>
+                        <p>Revenus</p>
+                    </div>
+                </div>
+
+                <div class="depense">
+                    <img src="/static/images/logo/depences.png" alt="depences">
+                    <div>
+                        <h2>{{ depenseParticulierUsd }} $</h2>
+                        <p>Dépenses</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cdf">
+                
+                <div class="gain">
+                    <img src="/static/images/logo/benefice.png" alt="benefice">
+                    <div>
+                        <h2>{{ gainParticulierCdf }} Fc</h2>
+                        <p>Revenus</p>
+                    </div>
+                </div>
+
+                <div class="depense">
+                    <img src="/static/images/logo/depences.png" alt="depences">
+                    <div>
+                        <h2>{{ depenseParticulierCdf }} Fc</h2>
+                        <p>Dépenses</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="element-graphique">
+        <div class="transaction">
+            <h1>Transactions</h1>
+            {% for transaction in transactions %}
+            <div>
+                <img src="/static/images/logo/baisse-fleche.png" alt="baisse-fleche">
+                <p class="categorie-trans">{{ transaction.categorie }}</p>
+                <p class="date-transa">{{ transaction.date_transaction|date:"d F" }}</p>
+                <h2 class="montant-trans">{{ transaction.montant }} $</h2>
+            </div>
+            <hr>
+            {% endfor %}
+        </div>
+        <section class="graphique">
+
+            <div class="graphique-gain">
+                <h1>Gains</h1>
+                <div class="container-gain-objectif-revenu">
+                    <h1>${{ gainParticulierUsd }}</h1>
+                    <p>${{ montant_objectf }}</p>
+                    <canvas id="gain-objectif-revenu"></canvas>
+                </div>
+            </div>
+
+            <div class="graphique-gain-mensuel">
+                <h1>Gain Mensuel</h1>
+                <p>
+                    Revenus
+                    <img src="/static/images/logo/revenuHautFleche.png" alt="">
+                    <div class="containner-canvas-line">
+                        <canvas id="barCanvas" aria-label="chart" role="img"></canvas>
+                    </div>
+                </p>
+            </div>
+
+        </section>
+    </div>
+
+
+</section>
+
+<section class="aside-dash">
+
+    <div class="payable-objectif">
+        <h1>Progression des bjectifs</h1>
+        <p>visualisation de votre situation financière</p>
+
+        <h2>{{ atteint }} ATTEINTS SUR {{ total }}</h2>
+            {% load tags %}
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+    <div class="reception-money">
+        <h1>Réceptions</h1>
+
+        {% for reception in receptions %}
+
+        <div class="container-reception-money">
+            <img src="/static/images/logo/ajout_money.png" alt="ajout_money">
+            <div>
+                <h3>$ {{ reception.montant }}</h3>
+                <p>{{ reception.categorie }}</p>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+
+    <div class="reception-money">
+        <h1>Charges Mensuelles</h1>
+
+        {% for charges in charges_mensuelles %}
+        <div class="container-reception-money">
+            <img src="/static/images/logo/payable.png" alt="payable">
+            <div>
+                <h3>$ {{ charges.montant }}</h3>
+                <p>{{ charges.categorie }}</p>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+
+</section>
+
+</div>
+
+
+<script>
+
+    const barCanvas = document.getElementById("myChart-analyse-depense");
+    const canv_rev_object = document.getElementById("gain-objectif-revenu");
+
+
+    new Chart(barCanvas, {
+        type: "bar",
+        data: {
+            labels: {{ labels|safe }},
+            datasets: [{
+                data: {{ data|safe }},
+                backgroundColor: [
+                    "#252525",
+                    "#D9D9D9",
+                    "blue",
+                    "red",
+                ],
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    ticks: {
+                        fonts: {
+                            size: "5px"
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    
+
+    new Chart(canv_rev_object, {
+        type: "doughnut",
+        data: {
+            labels: ["Gains", "Objectifs"],
+            datasets: [{
+                data: [{{ gainParticulierUsd|safe }}, {{ montant_objectf|safe }}],
+                backgroundColor: [
+                    "#509CF5",
+                    "#F16063",
+                ],
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    ticks: {
+                        fonts: {
+                            size: "5px"
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    {% comment %} progress bar objectifs {% endcomment %}
+
+    const total_objectif = {{ total|safe }};
+    const atteint_objectif = {{ atteint|safe }};
+
+    document.querySelector('.progress-bar').style.width = (atteint_objectif / total_objectif * 100) + '%';
+
+    document.querySelector('.progress-text').textContent = atteint_objectif + ' atteints sur ' + total_objectif;
+
+</script>
+
+
+
+{% endblock %}

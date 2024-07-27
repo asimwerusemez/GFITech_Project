@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerte de dépassement budgétaire</title>
+
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+    <img src="/static/images/logo/logo.png" alt="logo" width="50">
+    <h3 style="margin-top: 12px;">Bonjour ! {{ email }}</h3>
+    <p>Message provenant de GFITech</p>
+    <h1>{{ date }}</h1>
+    <h1 style="color: #004573; font-size: 25px; font-family: Verdana, sans-serif;">
+        {{ msg }}
+        <i class="fa-solid fa-triangle-exclamation" style="color: #ff0000; font-size: 22px;"></i>
+    </h1>
+</body>
+</html>

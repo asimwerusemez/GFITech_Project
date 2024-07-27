@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/objectif.css' %}">
+    <link rel="stylesheet" href="{% static 'css/analyse.css' %}">
+
+    <script src="{% static 'js/chart.js' %}"></script>
+    
+    <script type="module" src="{% static 'js/main_dash.js' %}" defer></script>
+    
+    <title>
+        {% block title %}
+
+            Accueil - 
+            {%if user.is_authenticated%}
+                {{ user.username }}
+            {% endif %}
+
+        {% endblock %}
+    </title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/logo/fiveicon/apple-touch-icon.png' %} %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/logo/fiveicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/logo/fiveicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/logo/fiveicon/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'images/logo/fiveicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    
+</head>
+<body>
+    <div class="container-dash-page">
+
+    <header class="header-aside">
+
+        <nav class="navbar__aside">
+            
+            <div class="profile_card">
+                <img src="{{ user.photo_profil.url }}" alt="{{ user.username }}">
+                {%if user.is_authenticated %}
+                    <h2>{{ user.username }}</h2>
+                {% endif %}
+
+                {% if user.is_authenticated and user.entrerprise %}
+                    <p>{{ user.nom_entreprise }}</p>
+                {% elif user.is_authenticated and user.particulier %}
+                    <p>{{ user.profession }}</p>
+                {% endif %}
+
+            </div>
+            
+            <div class="nav__links">
+                <a href="{% url 'dashboard:view_dash' %}" class="nav__links-a">
+                <div>
+                    <img src="/static/images/logo/dashbord.png" alt="dashbord">
+                    Tableau de Bord
+                </div>
+                </a>
+
+                <a href="{% url 'transaction:comptes' %}" class="nav__links-a">
+                <div>
+                    <img src="/static/images/logo/wallet.png" alt="wallet">
+                    Comptes
+                </div>
+                </a>
+
+                <a href="{% url 'transaction:listeTransaction' %}" class="nav__links-a">
+                <div>
+                    <img src="/static/images/logo/transaction.png" alt="transaction">
+                    Transactions
+                </div>
+                </a>
+
+                <a href="{% url 'objectif:objectif_view' %}" class="nav__links-a">
+                    <div>
+                        <img src="/static/images/logo/objectif.png" alt="recherche">
+                        Objectifs Financier
+                    </div>
+                </a>
+
+                <a href="/analyseDepense" class="nav__links-a">
+                <div>
+                    <img src="/static/images/logo/revenue.png" alt="dashbord">
+                    Analyse des revenues
+                </div>
+                </a>
+            </div>
+
+<hr>
+
+            <div class="config-aside_bar">
+                <a href="#" class="nav__links-a">
+                <div>
+                    <img src="/static/images/logo/settings.png" alt="settings">
+                    Paramétres
+                </div>
+                </a>
+                <a href="#" class="nav__links-a">
+                <div>
+                    <img src="/static/images/logo/help.png" alt="help">
+                    Aide
+                </div>
+                </a>
+
+                <a href="{% url 'accounts:logout' %}" class="nav__links-a">
+                <div>
+                    <img src="/static/images/logo/logout.png" alt="logout">
+                    Déconnexion
+                </div>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="right-main">
+        <div class="top-first">
+            <div class="container-top-first">
+                <div class="logo">
+                    <img src="/static/images/logo/logo.png" alt="">
+                </div>
+                <div class="search-top">
+                    <img src="/static/images/logo/recherche.png" alt="recherche"><input type="text" placeholder="Recherche">
+                </div>
+                <div class="notif-top">
+                    <a href="{% url 'transaction:alertDepensement' %}">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="number-send">
+                            {% block countAlert %}
+                            
+                            {% endblock %}
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="name-link">
+                {% block name_link %} {% endblock %}
+            </div> 
+        </div>
+        
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+    </div>
+
+
+    {% block script_objectif %}
+
+    {% endblock %}
+
+    <script>
+
+        const id_del = "{{ id_del }}";
+        const id_delete = "{{ id_objectif_del }}";
+        const id_update_template = "{{ id_update_objectif }}";
+        const id_ajouter_montant = "{{ id_ajouter_montant_objectif }}";
+
+    </script>
+
+
+
+
+
+</body>
+</html>
+

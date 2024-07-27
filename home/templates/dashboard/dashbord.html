@@ -1,0 +1,24 @@
+{% extends "base_dash.html" %}
+
+{% block title %}
+    Accueil - 
+    {%if user.is_authenticated and user.particulier%}
+        {{ user.username }}
+
+    {% elif user.is_authenticated and user.entreprise %}
+        {{ user.nom_entreprise }}
+        
+    {% endif %}
+
+{% endblock %}
+
+{% block name_link %} 
+Tableau de bord 
+{% endblock %}
+
+{% block content %}
+
+
+
+
+{% endblock %}

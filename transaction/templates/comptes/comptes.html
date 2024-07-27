@@ -1,0 +1,79 @@
+{% extends "base_dash.html" %}
+
+{% block title %}
+Comptes - 
+{%if user.is_authenticated%}
+    {{ user.username }}
+{% endif %}
+{% endblock %}
+
+{% block name_link %} 
+    Comptes
+{% endblock %}
+
+
+{% block content %}
+<div class="add-compte">
+    <a href="#" class="btn-ajout">+ AJOUTER UN COMPTE</a>
+</div>
+
+<div class="container-comptes">
+
+{% for compte in comptes %}
+<div class="liste-compte">
+    {% if compte.nom_compte == "Mpesa" or compte.operateur == "Mpesa" %}
+        <img src="/static/images/logo/comptes/mpesa.png" alt="mpesa" class="operateur">
+    {% elif compte.nom_compte == "Airtel Money" or compte.operateur == "Airtel Money" %}
+        <img src="/static/images/logo/comptes/airtel.png" alt="airtel" class="operateur">
+    {% elif compte.nom_compte == "Orange Money" or compte.operateur == "Orange Money" %}
+        <img src="/static/images/logo/comptes/orange.png" alt="orange" class="operateur">
+    {% elif compte.nom_compte == "Equity Bank" or compte.operateur == "Equity Bank" %}
+        <img src="/static/images/logo/comptes/equity.png" alt="equity" class="operateur">
+    {% elif compte.nom_compte == "RawBank" or compte.operateur == "RawBank" %}
+        <img src="/static/images/logo/comptes/Rawbank.png" alt="Rawbank" class="operateur">
+    {% elif compte.nom_compte == "Caisse" or compte.operateur == "Caisse" %}
+        <img src="/static/images/logo/comptes/caisse.png" alt="caisse" class="operateur caisse">
+    {% endif %}
+
+    <!-- {% if compte.nom_compte is not None %}
+        <h1>{{ compte.nom_compte }}</h1>
+    {% elif compte.operateur is not None %}
+        <h1>{{ compte.operateur }}</h1>
+    {% endif %} -->
+    <div class="solde-supp-compte">
+        <p class="solde">Solde: <span>{{ compte.solde }} {{ compte.devise }}</span></p>
+        <p class="supprimer-compte"><a href="{% url 'transaction:supprimer_compte' compte.id %}"><button>Supprimer</button></a></p>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+
+<section class="delete-compte">
+    <div>
+        <h3>Etes-vous sur de vouloir supprimer le compte <strong>{{ name_obj }}</strong> ?</h3>
+        <p>Toutes les transactions liée a ce compte seront supprimer</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="supprimer-compte-btn">Supprimer<button>
+            <a href="{% url 'transaction:comptes' %}"><button type="button" class="cancel-compte-btn">Annuler<button></a>
+        </form>
+    </div>
+</section>
+
+
+<section class="ajout_compte">
+    <a href="{% url 'transaction:comptes' %}"><img src="/static/images/logo/fermer.png" alt="" id="close-btn"></a>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Ajouter</button>
+        </form>
+    </div>
+</section>
+
+
+
+
+{% endblock %}
