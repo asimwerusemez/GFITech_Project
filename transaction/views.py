@@ -84,50 +84,6 @@ def import_relev_excel(request):
                     utilisateur=utilisateur,
                 )
                 transaction.save()
-
-                # Calcul du total des transactions pour la catégorie dans le mois
-                total_montant_categorie = Transaction.objects.filter(
-                categorie=transaction.categorie,
-                date_transaction__month=datetime.date.today().month,
-                date_transaction__year=datetime.date.today().year,
-                utilisateur=request.user
-                ).aggregate(total=Sum('montant'))['total'] or 0
-                calcDepassement = total_montant_categorie - transaction.categorie.limite
-
-                if transaction.type_transaction == "Crédit" and total_montant_categorie > transaction.categorie.limite:
-                    # Logique de notification par e-mail
-                    try:
-                        subject = "Alert de dépassement budgétaire"
-                        template = "email/alertEmail.html"
-                        context = {
-                            "date": datetime.datetime.now(), 
-                            "email": request.user.email,
-                            "msg": f"Dépassement du montant dans la catégorie {transaction.categorie.nom_categorie} de {calcDepassement} $"
-                        }
-                        
-                        email_sent = SendMessageEmail(subject=subject, receivers=[request.user.email], template=template, context=context)
-                        if not email_sent:
-                            print(f"Erreur lors de l'envoi de l'e-mail à {request.user.email}")
-                    except Exception as e:
-                        print("Une erreur s'est produite lors de l'envoi de la notification par e-mail : {e}")
-
-                elif transaction.type_transaction == "Débit" and total_montant_categorie < transaction.categorie.limite:
-                    # Logique de notification par e-mail
-                    try:
-                        subject = "Alert de dépassement budgétaire"
-                        template = "email/alertEmail.html"
-                        context = context = {
-                            "date": datetime.datetime.now(), 
-                            "email": request.user.username,
-                            "msg": f"insuffisance du montant dans la catégorie {transaction.categorie.nom_categorie} de {calcDepassement} $"
-                        }
-                        
-                        email_sent = SendMessageEmail(subject=subject, receivers=[request.user.email], template=template, context=context)
-                        if not email_sent:
-                            print(f"Erreur lors de l'envoi de l'e-mail à {request.user.email}")
-                    except Exception as e:
-                        print(f"Une erreur s'est produite lors de l'envoi de la notification par e-mail : {e}")
-
             return redirect("transaction:listeTransaction")
     else:
         form = FileForm(user=request.user)
